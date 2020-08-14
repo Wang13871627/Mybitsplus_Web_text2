@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>修改权限</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+</head>
+<body>
+<center>
+    <form class="layui-form" action="/employee/authu1.do">
+        <input type="hidden" name="aid" th:value="${auth.aid}"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名</label>
+            <div class="layui-input-block">
+                <input type="text" style="width:300px;" th:value="${auth.aname}" name="aname" lay-verify="aname"
+                       placeholder="请输入权限名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Url</label>
+            <div class="layui-input-block">
+                <input type="text" style="width:300px;" th:value="${auth.url}" name="url" lay-verify="url"
+                       placeholder="请输入URL地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限状态</label>
+            <div class="layui-input-block">
+                <select name="status">
+                    <option value="1" th:selected="${auth.status=='1'?true:flase}">可用</option>
+                    <option value="2" th:selected="${auth.status=='2'?true:flase}">禁用</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</center>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        form.render();
+
+        form.on('submit(formDemo)', function (data) {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        });
+
+        form.verify({
+            aname: function (value, item) { //value：表单的值、item：表单的DOM对象
+                if (value.length == 0) {
+                    return '权限名不能为空';
+                }
+                if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                    return '权限名不能有特殊字符';
+                }
+                if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                    return '权限名首尾不能出现下划线\'_\'';
+                }
+                if (/^\d+\d+\d$/.test(value)) {
+                    return '权限名不能全为数字';
+                }
+                if (value.length > 8) {
+                    return '权限名不能超过8个字';
+                }
+            }
+            , url: function (value, item) {
+                if (value.length == 0) {
+                    return 'URL地址不能为空';
+                }
+            }
+        });
+    });
+
+
+</script>
+</body>

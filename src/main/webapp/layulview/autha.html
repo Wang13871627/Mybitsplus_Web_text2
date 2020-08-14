@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加权限</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+</head>
+<body>
+<center>
+    <form class="layui-form" action="/employee/autha.do">
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名</label>
+            <div class="layui-input-block">
+                <input type="text" style="width:300px;" name="aname" lay-verify="aname" placeholder="请输入权限名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Url</label>
+            <div class="layui-input-block">
+                <input type="text" style="width:300px;" name="url" lay-verify="url" placeholder="请输入权限Url" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</center>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        var $=layui.jquery;
+
+        form.on('submit(formDemo)', function(data){
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        });
+
+
+        form.verify({
+            aname: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(value.length==0){
+                    return '用户名不能为空';
+                }
+                if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+                    return '用户名不能有特殊字符';
+                }
+                if(/(^\_)|(\__)|(\_+$)/.test(value)){
+                    return '用户名首尾不能出现下划线\'_\'';
+                }
+                if(/^\d+\d+\d$/.test(value)){
+                    return '用户名不能全为数字';
+                }
+                if(value.length>5){
+                    return '用户名不能超过4个字';
+                }
+            }
+            ,url:function(value,item) {
+                if(value.length==0){
+                    return 'URL地址不能为空';
+                }
+            }
+        });
+
+    });
+
+
+</script>
+</body>
