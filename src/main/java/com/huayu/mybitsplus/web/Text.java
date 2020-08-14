@@ -12,6 +12,9 @@ public class Text {
         Object salt=ByteSource.Util.bytes("宋帅");
         Integer hashIterations=1024;
         Object s=new SimpleHash(hashAlgorithmName,password,salt,hashIterations);
+
+
+
         System.out.println(s);
     }
 }
